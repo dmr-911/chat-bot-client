@@ -127,6 +127,7 @@ const ChatUi = () => {
       mic.onend = () =>{
         console.log("stopped mic on click");
         // sending to backend
+        console.log("note in stop", note);
         if(note){
           setBotMsgArr([...botMsgArr, note])
           textToServer(note);
