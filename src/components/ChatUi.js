@@ -84,6 +84,7 @@ const ChatUi = () => {
                 ...botMsgArr,
                 JSON.stringify(res.data.data[0].url),
               ]);
+              setNote(null);
             })
             .catch((err) => {
               setBotMsgArr([...botMsgArr, "Please try again"]);
@@ -128,11 +129,7 @@ const ChatUi = () => {
         console.log("stopped mic on click");
         // sending to backend
         console.log("note in stop", note);
-        if(note){
-          setBotMsgArr([...botMsgArr, note])
-          textToServer(note);
-          // setNote(null);
-        }
+        textToServer(note);
       }
     }
 
