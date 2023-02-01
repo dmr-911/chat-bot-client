@@ -1,9 +1,14 @@
 import React from "react";
 import Logo from "../images/LOGO-SECONDARIO.svg";
 import Bot from "../images/bot.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
+
+  const { user, name } = useAuth();
+
+  // router navigation
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -33,7 +38,7 @@ const Navbar = () => {
               </select>
             </div>
             <div className="flex gap-2 items-center">
-              <span>Shamsuddin</span>
+              <span>{name ? name : null}</span>
               <img
                 className="h-[50px] w-[50px] rounded-full"
                 src={Bot}

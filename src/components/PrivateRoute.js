@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Navigate, useNavigate } from 'react-router-dom'
 import { ChatContext } from "../context/AuthProvider";
-import useCredentials from "../hooks/useCredentials";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useContext(ChatContext);

@@ -3,7 +3,6 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { AiTwotoneAudio } from "react-icons/ai";
 import Bot from "../images/bot.png";
-import website from "../images/cuate.png";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
@@ -16,7 +15,7 @@ mic.interimResults = true;
 mic.lang = 'en-US';
 
 const ChatUi = () => {
-  const { user } = useAuth();
+  const { user, name } = useAuth();
 
   // mic states 
   const [isListening, setIsListening] = useState(false);
@@ -26,22 +25,51 @@ const ChatUi = () => {
   const [userMsgArr, setUserMsgArr] = useLocalStorage("userMsgArr", []);
   const [botMsgArr, setBotMsgArr] = useLocalStorage("botMsgArr", []);
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
+
+  // axios config
   const config = {
     headers: { Authorization: `Bearer ${accessToken}`},
   };
 
+  // message container ref
   const messageRef = useRef();
 
   // Formik
   const initialValues = {
     text: "",
   };
+
+
+  // text to server handler 
+  const textToServer = (user_input) =>{
+    axios
+    .post(`chatbot/`, { user_input, language: "English" }, config, {withCredentials: true})
+    .then((res) => {
+      // getting response
+      axios
+        .get(`chatbot/?task_id=${res.data.task_id}`, config)
+        .then((res) => {
+          setBotMsgArr([...botMsgArr, res?.data?.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+          setBotMsgArr([...botMsgArr, "Please try again"]);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      setBotMsgArr([...botMsgArr, "Please try again"]);
+    });
+  }
+
+
+  // submit form handler
   const onSubmit = async (values) => {
     const newPrompt = values.text;
     setUserMsgArr([...userMsgArr, newPrompt]); // set user msg to local storage
     formik.values.text = "";
 
-    // checking if image or not
+    // checking if image
     if (newPrompt.startsWith("/image")) {
       const prompt = newPrompt.split("/image")[1];
       axios
@@ -67,25 +95,7 @@ const ChatUi = () => {
         });
     } else {
       // if not image
-
-      axios
-        .post(`chatbot/`, { user_input: newPrompt, language: "English" }, config, {withCredentials: true})
-        .then((res) => {
-          // getting response
-          axios
-            .get(`chatbot/?task_id=${res.data.task_id}`, config)
-            .then((res) => {
-              setBotMsgArr([...botMsgArr, res?.data?.data]);
-            })
-            .catch((err) => {
-              console.log(err);
-              setBotMsgArr([...botMsgArr, "Please try again"]);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-          setBotMsgArr([...botMsgArr, "Please try again"]);
-        });
+      textToServer(newPrompt);
     }
   };
   const formik = useFormik({
@@ -93,10 +103,12 @@ const ChatUi = () => {
     onSubmit,
   });
 
+  // scroll to bottom handler 
   const scrollToBottom = () => {
     messageRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // effect for message scroll to bottom
   useEffect(() => {
     scrollToBottom();
   }, [userMsgArr, botMsgArr]);
@@ -114,6 +126,12 @@ const ChatUi = () => {
       mic.stop();
       mic.onend = () =>{
         console.log("stopped mic on click");
+        // sending to backend
+        if(note){
+          setBotMsgArr([...botMsgArr, note])
+          textToServer(note);
+          setNote(null);
+        }
       }
     }
 
@@ -151,7 +169,7 @@ const ChatUi = () => {
               <div className="flex items-center">
                 <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-2 items-start">
                   <span className="text-2xl font-bold">
-                    This is {user?.username}
+                    This is {name}
                   </span>
                 </div>
                 <img

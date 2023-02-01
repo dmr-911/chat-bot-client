@@ -3,7 +3,7 @@ import React from "react";
 import ChatUi from "./components/ChatUi";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile/Profile";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import AuthProvider from "./context/AuthProvider";
 import PrivateRoute from "./components/PrivateRoute";
