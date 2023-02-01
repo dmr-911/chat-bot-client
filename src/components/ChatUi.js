@@ -130,7 +130,7 @@ const ChatUi = () => {
         if(note){
           setBotMsgArr([...botMsgArr, note])
           textToServer(note);
-          setNote(null);
+          // setNote(null);
         }
       }
     }
