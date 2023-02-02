@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import AuthProvider from "./context/AuthProvider";
 import PrivateRoute from "./components/PrivateRoute";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<SignUp/>}/>
           </Routes>
         </AuthProvider>
       </main>
