@@ -41,12 +41,12 @@ const ChatUi = () => {
 
 
   // text to server handler 
-  const textToServer = (user_input) =>{
-    axios
+  const textToServer = async (user_input) =>{
+    await axios
     .post(`chatbot/`, { user_input, language: "English" }, config, {withCredentials: true})
     .then((res) => {
       // getting response
-      axios
+        axios
         .get(`chatbot/?task_id=${res.data.task_id}`, config)
         .then((res) => {
           setBotMsgArr([...botMsgArr, res?.data?.data]);

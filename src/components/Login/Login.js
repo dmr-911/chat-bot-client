@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
@@ -37,9 +37,9 @@ const Login = () => {
       {/* component */}
       <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[660px] overflow-hidden">
       <div className="relative flex flex-col justify-center h-full overflow-hidden">
-            <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
-                <h1 className="text-3xl font-semibold text-center text-purple-700 underline">
-                   Sign in
+            <div className="w-full p-6 m-auto bg-white rounded-md">
+                <h1 className="text-3xl font-semibold text-center text-[#3E8A5F] underline">
+                   Sign In
                 </h1>
                 <form className="mt-6" onSubmit={formik.handleSubmit}>
                     <div className="mb-2">
@@ -55,7 +55,7 @@ const Login = () => {
                             type="email"
                             onChange={formik.handleChange}
                             value={formik.values.email}
-                            className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                            className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-[#3E8A5F] focus:ring-green-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
                     <div className="mb-2">
@@ -71,15 +71,16 @@ const Login = () => {
                             onChange={formik.handleChange}
                             value={formik.values.password}
                             type="password"
-                            className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                            className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-[#3E8A5F] focus:ring-green-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
  
                     <div className="mt-6">
-                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
+                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#3E8A5F]/90 rounded-md hover:bg-[#3E8A5F] focus:outline-none focus:bg-green-600">
                             Login
                         </button>
                     </div>
+                    <p>Don't have account? <NavLink to="/signup" style={{textDecoration : 'underline', color : '#3E8A5F'}}>Signup</NavLink></p>
                 </form>
             </div>
         </div>
