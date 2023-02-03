@@ -2,10 +2,19 @@ import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../formik/formikControl";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useLocation } from "react-router-dom";
+import useCredentials from "../../hooks/useCredentials";
 
 
 const SignUp = () => {
+  // location trace
+  const location = useLocation();
+  const destination = location?.state?.from || '/';
+
+
+  const {user, signUp} = useCredentials()
+
+  // formik start
     const options = [
         { key: "Female", value: "female" },
         { key: "Male", value: "male" },
@@ -35,7 +44,14 @@ const SignUp = () => {
     
       const onSubmit = (values) => {
         console.log(values);
+        signUp(values)
       };
+
+
+      // redirect 
+      if(user?.username || user?.first_name) {
+        return <Navigate to={destination}/>
+      }
   return (
     <section className="bg-body md:py-16 h-full relative">
     {/* main chat section */}
@@ -94,7 +110,7 @@ const SignUp = () => {
                     options={options}
                     />
                                          <div className="mt-6">
-                         <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#3E8A5F]/90 rounded-md hover:bg-[#3E8A5F] focus:outline-none focus:bg-green-600">
+                         <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#3E8A5F]/90 rounded-md hover:bg-[#3E8A5F] focus:outline-none">
                              Sign up
                          </button>
                      </div>

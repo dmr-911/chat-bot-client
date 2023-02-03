@@ -10,6 +10,17 @@ const useCredentials = () => {
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
   const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", "");
 
+
+  // const user data 
+  const userData = async (access) =>{
+    const config = {
+      headers: { Authorization: `Bearer ${access}` },
+    };
+
+    const response = await axios.get("users/info/", config);
+    setUser(response.data);
+  }
+
   // login user
   const login = async (email, password) => {
     const { data } = await axios.post(
@@ -39,7 +50,28 @@ const useCredentials = () => {
     }
   };
 
-  return { user, setUser, login, accessToken, refreshToken, name };
+
+  // register method
+  const signUp = async (data) =>{
+    axios.post('users/', data)
+    .then(res => {
+
+      console.log(res)
+      // set tokens in local storage
+      setAccessToken(res.tokens.access);
+      setRefreshToken(res.tokens.refresh);
+
+      if(res.tokens.access){
+        console.log(res.tokens)
+        // data retrive
+        userData(res.tokens.access)
+      }
+    }).catch(err =>{
+      console.log(err.response);
+    })
+  }
+
+  return { user, setUser, login, signUp, accessToken, refreshToken, name };
 };
 
 export default useCredentials;
