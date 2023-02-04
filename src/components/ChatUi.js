@@ -145,7 +145,7 @@ const ChatUi = () => {
       setNote(transcript);
 
       // manupulating final result 
-      console.log(event.result);
+      console.log(event);
       // if(event.result[0].isFinal){
       //  if(transcript.includes('YouTube')){
       //   window.open('https://youtube.com')
