@@ -291,7 +291,7 @@ const ChatUi = () => {
             </div>
             <AiTwotoneAudio onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 hover:text-[#3E8A5F] ${isListening ? "text-[#3E8A5F]" : "text-black"} cursor-pointer`} />
           </div>
-          {/* <p>{note}</p> */}
+          <p>{note}</p>
         </div>
                       {/* aside section */}
         <style
