@@ -32,7 +32,7 @@ const Login = () => {
       }
 
   return (
-    <section className="bg-body md:py-16 h-full relative">
+    <section className="bg-body md:py-16 h-full relative p-4">
     {/* main chat section */}
     <div className="xl:w-[560px] bg-white mx-auto rounded-xl">
       {/* component */}

@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import Layout from "./Layout";
 import website from '../images/cuate.png';
+import userImage from '../images/user.png';
 
 const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
 const mic = new SpeechRecognition();
@@ -161,10 +162,11 @@ const ChatUi = () => {
       {/* main chat section */}
       <div className="xl:w-[860px] bg-white mx-auto rounded-xl relative">
         {/* component */}
-        <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden">
+        <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[55vh] overflow-hidden">
+        {/* <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden"> */}
           <div 
             id="messages"
-            className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-hide"
+            className="absolute w-full left-0 bottom-20 h-[75vh] flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-hide"
           >
             <div className="chat-message">
               <div className="flex items-center">
@@ -204,7 +206,7 @@ const ChatUi = () => {
                           </div>
                         </div>
                         <img
-                          src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144"
+                          src={userImage}
                           alt="My profile"
                           className="w-14 h-14 rounded-full order-2"
                         />
@@ -243,7 +245,7 @@ const ChatUi = () => {
               : null}
             <div ref={messageRef} />
           </div>
-          <div className="w-full absolute left-0 bottom-8 border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 flex xl:gap-4">
+          <div className="w-full absolute left-0 bottom-8 border-t-2 bg-white border-gray-200 px-4 pt-4 mb-2 sm:mb-0 flex xl:gap-4">
             <div className="relative flex flex-grow">
               <form
                 onSubmit={formik.handleSubmit}
@@ -289,7 +291,7 @@ const ChatUi = () => {
               "\n.scrollbar-w-2::-webkit-scrollbar {\n  width: 0.25rem;\n  height: 0.25rem;\n}\n\n.scrollbar-track-blue-lighter::-webkit-scrollbar-track {\n  --bg-opacity: 1;\n  background-color: #f7fafc;\n  background-color: rgba(247, 250, 252, var(--bg-opacity));\n}\n\n.scrollbar-thumb-blue::-webkit-scrollbar-thumb {\n  --bg-opacity: 1;\n  background-color: #edf2f7;\n  background-color: rgba(237, 242, 247, var(--bg-opacity));\n}\n\n.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {\n  border-radius: 0.25rem;\n}\n",
             }}
         />
-            <aside className="hidden xl:block mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
+            <aside className="hidden xl:block overflow-hidden mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
               <div className="pt-4 mb-16">
                 <p className="text-2xl">Visit my website</p>
                 <img
