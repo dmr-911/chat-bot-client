@@ -26,6 +26,7 @@ const Login = () => {
         onSubmit,
       });
 
+      console.log(location)
       if(user?.username) {
         return <Navigate to={destination}/>
       }

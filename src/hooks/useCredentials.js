@@ -69,9 +69,16 @@ const useCredentials = () => {
     }).catch(err =>{
       console.log(err.response);
     })
+  };
+
+  // log out 
+  const logOut = () =>{
+    setAccessToken("");
+    setRefreshToken("");
+    setUser(null);
   }
 
-  return { user, setUser, login, signUp, accessToken, refreshToken, name };
+  return { user, setUser, login, signUp, accessToken, refreshToken, name , logOut };
 };
 
 export default useCredentials;

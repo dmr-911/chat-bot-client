@@ -12,23 +12,6 @@ const Layout = ({children}) => {
         </div>
         </div>
         </div>
-              {/* aside section */}
-      {/* <aside className="hidden md:block absolute right-[30rem] bottom-40 h-[300px] w-[264px] bg-white rounded-xl px-2 py-3">
-        <div className="pt-4 mb-16">
-          <p className="text-2xl">Visit my website</p>
-          <img
-            className="mx-auto h-[100pxx] w-[95px] mt-4"
-            src={website}
-            alt="website"
-          />
-        </div>
-        <a
-          href="#"
-          className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
-        >
-          Go to my vegan coach
-        </a>
-      </aside> */}
         </section>
   )
 }

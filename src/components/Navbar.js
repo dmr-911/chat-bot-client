@@ -1,12 +1,12 @@
 import React from "react";
 import Logo from "../images/LOGO-SECONDARIO.svg";
 import Bot from "../images/bot.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
 
-  const { user, name } = useAuth();
+  const { user, name, logOut } = useAuth();
 
   // router navigation
   const navigate = useNavigate();
@@ -38,9 +38,10 @@ const Navbar = () => {
               </select>
             </div>
             <div className="flex gap-2 items-center">
-              <span>{name ? name : null}</span>
+              <span>{name ? <NavLink to="/profile">{name}</NavLink> : null}</span>
               <img
-                className="h-[50px] w-[50px] rounded-full"
+                onClick={()=>logOut()}
+                className="h-[50px] w-[50px] rounded-full cursor-pointer"
                 src={Bot}
                 alt="User"
               />

@@ -7,6 +7,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import Layout from "./Layout";
+import website from '../images/cuate.png';
 
 const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
 const mic = new SpeechRecognition();
@@ -156,12 +157,9 @@ const ChatUi = () => {
 
   return (
 
-    // <Layout>
-
-    // </Layout>
-    <section className="bg-body md:py-16 h-full relative">
+    <section className="bg-body md:py-16 h-full relative p-4">
       {/* main chat section */}
-      <div className="xl:w-[860px] bg-white mx-auto rounded-xl">
+      <div className="xl:w-[860px] bg-white mx-auto rounded-xl relative">
         {/* component */}
         <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden">
           <div 
@@ -245,7 +243,7 @@ const ChatUi = () => {
               : null}
             <div ref={messageRef} />
           </div>
-          <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 flex xl:gap-4">
+          <div className="w-full absolute left-0 bottom-8 border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 flex xl:gap-4">
             <div className="relative flex flex-grow">
               <form
                 onSubmit={formik.handleSubmit}
@@ -282,15 +280,51 @@ const ChatUi = () => {
             </div>
             <AiTwotoneAudio onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 hover:text-[#3E8A5F] ${isListening ? "text-[#3E8A5F]" : "text-black"} cursor-pointer`} />
           </div>
-          <p>{note}</p>
+          {/* <p>{note}</p> */}
         </div>
+                      {/* aside section */}
         <style
           dangerouslySetInnerHTML={{
             __html:
               "\n.scrollbar-w-2::-webkit-scrollbar {\n  width: 0.25rem;\n  height: 0.25rem;\n}\n\n.scrollbar-track-blue-lighter::-webkit-scrollbar-track {\n  --bg-opacity: 1;\n  background-color: #f7fafc;\n  background-color: rgba(247, 250, 252, var(--bg-opacity));\n}\n\n.scrollbar-thumb-blue::-webkit-scrollbar-thumb {\n  --bg-opacity: 1;\n  background-color: #edf2f7;\n  background-color: rgba(237, 242, 247, var(--bg-opacity));\n}\n\n.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {\n  border-radius: 0.25rem;\n}\n",
-          }}
+            }}
         />
+            <aside className="hidden xl:block mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
+              <div className="pt-4 mb-16">
+                <p className="text-2xl">Visit my website</p>
+                <img
+                  className="mx-auto h-[100pxx] w-[95px] mt-4"
+                  src={website}
+                  alt="website"
+                />
+              </div>
+              <a
+                href="/"
+                className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
+              >
+                Go to my vegan coach
+              </a>
+            </aside>
       </div>
+
+
+      {/* Mobile side bar */}
+      <aside className="xl:hidden mx-auto w-[264px] bg-white rounded-xl px-2 py-3 mt-4">
+              <div className="pt-4 mb-16">
+                <p className="text-2xl">Visit my website</p>
+                <img
+                  className="mx-auto h-[100pxx] w-[95px] mt-4"
+                  src={website}
+                  alt="website"
+                />
+              </div>
+              <a
+                href="/"
+                className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
+              >
+                Go to my vegan coach
+              </a>
+            </aside>
     </section>
   );
 };
