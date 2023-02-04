@@ -131,8 +131,8 @@ const ChatUi = () => {
       mic.onend = () =>{
         console.log("stopped mic on click");
         // sending to backend
-        console.log("note in stop", note);
-        textToServer(note);
+        // console.log("note in stop", note);
+        // textToServer(note);
       }
     }
 
@@ -142,8 +142,17 @@ const ChatUi = () => {
 
     mic.onresult = event =>{
       const transcript = Array.from(event.results).map(result => result[0]).map(result => result.transcript).join('')
-      console.log(transcript);
       setNote(transcript);
+
+      // manupulating final result 
+      console.log(event.result[0].isFinal);
+      if(event.result[0].isFinal){
+       if(transcript.includes('YouTube')){
+        window.open('https://youtube.com')
+       }
+      }
+
+
       mic.onerror = event =>{
         console.log(event.error);
       }
