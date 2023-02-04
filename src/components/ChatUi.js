@@ -6,7 +6,6 @@ import Bot from "../images/bot.png";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
-import Layout from "./Layout";
 import website from '../images/cuate.png';
 import userImage from '../images/user.png';
 
