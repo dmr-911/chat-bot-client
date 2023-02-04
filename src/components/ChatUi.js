@@ -130,9 +130,6 @@ const ChatUi = () => {
       mic.stop();
       mic.onend = () =>{
         console.log("stopped mic on click");
-        // sending to backend
-        // console.log("note in stop", note);
-        // textToServer(note);
       }
     }
 
@@ -145,10 +142,10 @@ const ChatUi = () => {
       setNote(transcript);
 
       // manupulating final result 
-      if(event.results[0].isFinal){
-       if(transcript.includes('YouTube')){
-        window.open('https://youtube.com')
-       }
+      if(event?.results[0]?.isFinal){
+        // sending to backend
+        setNote(null)
+        textToServer(transcript);
       }
 
 
@@ -201,6 +198,28 @@ const ChatUi = () => {
                 </div>
               </div>
             </div>
+
+            {/* displaying user record message */}
+            {
+              isListening && note ?  <div className="chat-message mb-4">
+              <div className="flex items-end justify-end">
+                <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-1 items-end">
+                  <div>
+                    <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
+                      {note}
+                    </span>
+                  </div>
+                </div>
+                <img
+                  src={userImage}
+                  alt="My profile"
+                  className="w-14 h-14 rounded-full order-2"
+                />
+              </div>
+            </div> : null
+            }
+
+            {/* displaying user message */}
             {userMsgArr.length
               ? userMsgArr.map((msg, i) => (
                   <div key={i}>
