@@ -21,7 +21,7 @@ const ChatUi = () => {
 
   // mic states 
   const [isListening, setIsListening] = useState(false);
-  const [note, setNote] = useState(null);
+  const [note, setNote] = useState("");
 
   // value of local storage
   const [userMsgArr, setUserMsgArr] = useLocalStorage("userMsgArr", []);
@@ -162,7 +162,10 @@ const ChatUi = () => {
     handleListen()
   },[isListening])
 
-  
+  useEffect(() => {
+    formik.setFieldValue('text', note);
+}, [note])
+
 
   return (
 
@@ -290,7 +293,7 @@ const ChatUi = () => {
                   //   onChange={(e) => setPrompt(e.target.value)}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values?.text || note}
+                  value={formik.values?.text}
                 />
                 <div className="absolute right-0 items-center inset-y-0 flex">
                   <button
