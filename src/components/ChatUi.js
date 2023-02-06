@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import website from '../images/cuate.png';
 import userImage from '../images/user.png';
+import {FaRegStopCircle} from 'react-icons/fa';
 
 const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
 const mic = new SpeechRecognition();
@@ -322,11 +323,17 @@ const ChatUi = () => {
                 </div>
               </form>
             </div>
-            <AiTwotoneAudio onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 hover:text-[#3E8A5F] ${isListening ? "text-[#3E8A5F]" : "text-black"} cursor-pointer`} />
+
+            {/* Mic button and  stop button */}
+            {
+              isListening ?
+              <FaRegStopCircle onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 text-red-500 cursor-pointer`} />
+              :
+              <AiTwotoneAudio onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 hover:text-[#3E8A5F] ${isListening ? "text-[#3E8A5F]" : "text-black"} cursor-pointer`} />
+            }
           </div>
-          <p>{note}</p>
         </div>
-                      {/* aside section */}
+        {/* aside section */}
         <style
           dangerouslySetInnerHTML={{
             __html:
