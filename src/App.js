@@ -10,6 +10,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import SignUp from "./components/SignUp";
 import useLocalStorage from "./hooks/useLocalStorage";
 import axios from "axios";
+import EditProfile from "./components/EditProfile";
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+            <Route
+          path="/edit-profile"
+          element={
+            <PrivateRoute>
+              <EditProfile />
             </PrivateRoute>
           }
         />
