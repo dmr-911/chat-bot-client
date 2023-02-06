@@ -17,7 +17,7 @@ mic.interimResults = true;
 mic.lang = 'en-US';
 
 const ChatUi = () => {
-  const { user, name, setUser } = useAuth();
+  const { user, name, setUser, chatHistory } = useAuth();
 
   // mic states 
   const [isListening, setIsListening] = useState(false);
@@ -158,13 +158,22 @@ const ChatUi = () => {
     };
   };
 
+  // calling method when mic on or off
   useEffect(()=>{
     handleListen()
   },[isListening])
 
+  // update input on mic
   useEffect(() => {
     formik.setFieldValue('text', note);
 }, [note])
+
+  // retrive user chat history
+  useEffect(()=>{
+    if(user?.username){
+      chatHistory()
+    }
+  },[user])
 
 
   return (

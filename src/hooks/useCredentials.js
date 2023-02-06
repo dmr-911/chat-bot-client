@@ -9,6 +9,8 @@ const useCredentials = () => {
   // local storage
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
   const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", "");
+  const [userMsgArr, setUserMsgArr] = useLocalStorage("userMsgArr", []);
+  const [botMsgArr, setBotMsgArr] = useLocalStorage("botMsgArr", []);
 
 
   // const user data 
@@ -19,6 +21,18 @@ const useCredentials = () => {
 
     const response = await axios.get("users/info/", config);
     setUser(response.data);
+  }
+
+  // user chat history
+  const chatHistory = async () =>{
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    };
+
+    const response = await axios.get("chatbot/history/", config);
+
+    setBotMsgArr(response.data.botMsgArr);
+    setUserMsgArr(response.data.userMsgArr);
   }
 
   // login user
@@ -76,9 +90,11 @@ const useCredentials = () => {
     setAccessToken("");
     setRefreshToken("");
     setUser(null);
+    setUserMsgArr([]);
+    setBotMsgArr([]);
   }
 
-  return { user, setUser, login, signUp, accessToken, refreshToken, name , logOut };
+  return { user, setUser, login, signUp, chatHistory, accessToken, refreshToken, userMsgArr, botMsgArr, name , logOut };
 };
 
 export default useCredentials;
