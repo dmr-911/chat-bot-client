@@ -4,8 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 
 const Profile = () => {
- const {user} = useAuth();
- console.log(user)
+ const {user, logOut} = useAuth();
 
 
   return (
@@ -39,9 +38,9 @@ const Profile = () => {
           </div>
 
           {/* logout button */}
-          <div className="text-xl font-bold flex items-center gap-4 cursor-pointer pb-8">
-            <HiOutlineLogout className="text-2xl" />
-            <span>Log Out</span>
+          <div className="text-xl font-bold flex items-center pb-8">
+            <HiOutlineLogout className="text-2xl cursor-pointer" onClick={()=> logOut()}/>
+            <span className="cursor-pointer" onClick={()=> logOut()}>Log Out</span>
           </div>
         </section>
       </div>
