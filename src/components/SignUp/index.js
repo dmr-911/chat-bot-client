@@ -53,14 +53,14 @@ const SignUp = () => {
         return <Navigate to={destination}/>
       }
   return (
-    <section className="bg-body md:py-16 h-full relative">
+    <section className="bg-body md:py-16 h-full relative p-4">
     {/* main chat section */}
     <div className="xl:w-[560px] bg-white mx-auto rounded-xl">
       {/* component */}
-      <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[660px] overflow-hidden">
-      <div className="relative flex flex-col justify-center h-full overflow-hidden">
-            <div className="w-full p-6 m-auto bg-white rounded-md">
-                <h1 className="text-3xl font-semibold text-center text-[#3E8A5F] underline">
+      <div className="flex-1 p-6 justify-between flex flex-col h-screen">
+      <div className="relative flex flex-col justify-center h-full">
+            <div className="w-full p-6 m-auto bg-white rounded-md text-left">
+                <h1 className="text-3xl font-semibold text-center text-[#3E8A5F] underline mb-4">
                    Sign Up
                 </h1>
 
@@ -102,6 +102,7 @@ const SignUp = () => {
                     label="Phone number"
                     name="phone_number"
                     />
+                    <div className="text-center">
                     <FormikControl
                     control = 'radio'
                     label="Gender"
@@ -109,6 +110,7 @@ const SignUp = () => {
                     
                     options={options}
                     />
+                    </div>
                     <div className="mt-6">
                          <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#3E8A5F]/90 rounded-md hover:bg-[#3E8A5F] focus:outline-none">
                              Sign up
@@ -119,7 +121,7 @@ const SignUp = () => {
             }
         }
     </Formik>
-    <p>Already have an account? <NavLink to="/login" style={{textDecoration : 'underline', color : '#3E8A5F'}}>Sign In</NavLink></p>
+    <p className="text-center mt-4">Already have an account? <NavLink to="/login" style={{textDecoration : 'underline', color : '#3E8A5F'}}>Sign In</NavLink></p>
     </div>
     </div>
     </div>

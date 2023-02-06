@@ -80,7 +80,7 @@ const Login = () => {
                             Login
                         </button>
                     </div>
-                    <p>Don't have account? <NavLink to="/signup" style={{textDecoration : 'underline', color : '#3E8A5F'}}>Signup</NavLink></p>
+                    <p className='mt-4'>Don't have account? <NavLink to="/signup" style={{textDecoration : 'underline', color : '#3E8A5F'}}>Signup</NavLink></p>
                 </form>
             </div>
         </div>
