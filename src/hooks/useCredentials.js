@@ -24,9 +24,9 @@ const useCredentials = () => {
   }
 
   // user chat history
-  const chatHistory = async () =>{
+  const chatHistory = async (access) =>{
     const config = {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken || access}` },
     };
 
     const response = await axios.get("chatbot/history/", config);
@@ -61,6 +61,7 @@ const useCredentials = () => {
 
       const response = await axios.get("users/info/", config);
       setUser(response.data);
+      chatHistory(data.access);
     }
   };
 
