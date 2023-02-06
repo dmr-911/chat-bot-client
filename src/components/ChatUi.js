@@ -143,8 +143,8 @@ const ChatUi = () => {
       // manupulating final result 
       if(event?.results[0]?.isFinal){
         // sending to backend
-        setNote(null)
-        textToServer(transcript);
+        // setNote(null)
+        // textToServer(transcript);
       }
 
 
@@ -286,7 +286,7 @@ const ChatUi = () => {
                   //   onChange={(e) => setPrompt(e.target.value)}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values?.text}
+                  value={formik.values?.text || note}
                 />
                 <div className="absolute right-0 items-center inset-y-0 flex">
                   <button
