@@ -26,3 +26,28 @@ export const useLocalStorage = (key, initialValue) => {
 };
 
 export default useLocalStorage;
+
+// import { useEffect, useState } from "react";
+
+// export const useLocalStorage = (key, initialValue) => {
+//   const [storedValue, setStoredValue] = useState(initialValue);
+
+//   useEffect(() => {
+//     const current = window.localStorage.getItem(key);
+//     if (current) {
+//       setStoredValue(JSON.parse(current));
+//     } else {
+//       window.localStorage.setItem(key, JSON.stringify(initialValue));
+//       setStoredValue(initialValue);
+//     }
+//   }, []);
+
+//   const updateValue = (newValue) => {
+//     setStoredValue(newValue);
+//     window.localStorage.setItem(key, JSON.stringify(newValue));
+//   };
+
+//   return [storedValue, updateValue];
+// };
+
+// export default useLocalStorage;

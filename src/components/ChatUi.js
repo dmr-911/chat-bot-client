@@ -6,21 +6,23 @@ import Bot from "../images/bot.png";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
-import website from '../images/cuate.png';
-import userImage from '../images/user.png';
-import {FaRegStopCircle} from 'react-icons/fa';
+import website from "../images/cuate.png";
+import userImage from "../images/user.png";
+import { FaRegStopCircle } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+  window.speechRecognition || window.webkitSpeechRecognition;
 const mic = new SpeechRecognition();
 
 mic.continuous = true;
 mic.interimResults = true;
-mic.lang = 'en-US';
+mic.lang = "en-US";
 
 const ChatUi = () => {
-  const { user, name, setUser, chatHistory } = useAuth();
+  const { user, name, setUser, chatHistory, deleteChat } = useAuth();
 
-  // mic states 
+  // mic states
   const [isListening, setIsListening] = useState(false);
   const [note, setNote] = useState("");
 
@@ -31,7 +33,7 @@ const ChatUi = () => {
 
   // axios config
   const config = {
-    headers: { Authorization: `Bearer ${accessToken}`},
+    headers: { Authorization: `Bearer ${accessToken}` },
   };
 
   // message container ref
@@ -42,29 +44,29 @@ const ChatUi = () => {
     text: "",
   };
 
-
-  // text to server handler 
-  const textToServer = async (user_input) =>{
+  // text to server handler
+  const textToServer = async (user_input) => {
     await axios
-    .post(`chatbot/`, { user_input, language: "English" }, config, {withCredentials: true})
-    .then((res) => {
-      // getting response
+      .post(`chatbot/`, { user_input, language: "English" }, config, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        // getting response
         axios
-        .get(`chatbot/?task_id=${res.data.task_id}`, config)
-        .then((res) => {
-          setBotMsgArr([...botMsgArr, res?.data?.data]);
-        })
-        .catch((err) => {
-          console.log(err);
-          setBotMsgArr([...botMsgArr, "Please try again"]);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      setBotMsgArr([...botMsgArr, "Please try again"]);
-    });
-  }
-
+          .get(`chatbot/?task_id=${res.data.task_id}`, config)
+          .then((res) => {
+            setBotMsgArr([...botMsgArr, res?.data?.data]);
+          })
+          .catch((err) => {
+            console.log(err);
+            setBotMsgArr([...botMsgArr, "Please try again"]);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setBotMsgArr([...botMsgArr, "Please try again"]);
+      });
+  };
 
   // submit form handler
   const onSubmit = async (values) => {
@@ -78,7 +80,6 @@ const ChatUi = () => {
       axios
         .post(`${process.env.REACT_APP_BASE_URL}/image_chat`, { prompt })
         .then((res) => {
-
           axios
             .get(`${process.env.REACT_APP_BASE_URL}/image/${res.data.task_id}`)
             .then((res) => {
@@ -107,7 +108,7 @@ const ChatUi = () => {
     onSubmit,
   });
 
-  // scroll to bottom handler 
+  // scroll to bottom handler
   const scrollToBottom = () => {
     messageRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -117,84 +118,78 @@ const ChatUi = () => {
     scrollToBottom();
   }, [userMsgArr, botMsgArr]);
 
-
   // mic events
-  const handleListen = () =>{
-    if(isListening){
+  const handleListen = () => {
+    if (isListening) {
       mic.start();
-      mic.onend = () =>{
-        console.log('continue');
-        mic.start()
-      }
-    }else {
+      mic.onend = () => {
+        console.log("continue");
+        mic.start();
+      };
+    } else {
       mic.stop();
-      mic.onend = () =>{
+      mic.onend = () => {
         console.log("stopped mic on click");
-      }
+      };
     }
 
-    mic.onstart = () =>{
+    mic.onstart = () => {
       console.log("mics on");
-    }
+    };
 
-    mic.onresult = event =>{
-      const transcript = Array.from(event.results).map(result => result[0]).map(result => result.transcript).join('')
+    mic.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join("");
       setNote(transcript);
 
-      // manupulating final result 
-      if(event?.results[0]?.isFinal){
-
-        if(transcript.includes('YouTube')){
-          window.open('https://youtube.com')
+      // manupulating final result
+      if (event?.results[0]?.isFinal) {
+        if (transcript.includes("YouTube")) {
+          window.open("https://youtube.com");
         }
-        // sending to backend
-        // setNote(null)
-        // textToServer(transcript);
       }
 
-
-      mic.onerror = event =>{
+      mic.onerror = (event) => {
         console.log(event.error);
-      }
+      };
     };
   };
 
   // calling method when mic on or off
-  useEffect(()=>{
-    handleListen()
-  },[isListening])
+  useEffect(() => {
+    handleListen();
+  }, [isListening]);
 
   // update input on mic
   useEffect(() => {
-    formik.setFieldValue('text', note);
-}, [note])
+    formik.setFieldValue("text", note);
+  }, [note]);
 
   // retrive user chat history
-  useEffect(()=>{
-    if(user?.username){
-      chatHistory()
+  useEffect(() => {
+    if (user?.username) {
+      chatHistory();
     }
-  },[user])
+  }, [user]);
 
 
   return (
-
     <section className="bg-body md:py-16 h-full relative p-4">
       {/* main chat section */}
       <div className="xl:w-[860px] bg-white mx-auto rounded-xl relative">
         {/* component */}
         <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[55vh] overflow-hidden">
-        {/* <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden"> */}
-          <div 
+          {/* <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden"> */}
+          <div
             id="messages"
             className="absolute w-full left-0 bottom-20 h-[75vh] flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-hide"
           >
             <div className="chat-message">
               <div className="flex items-center">
                 <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-2 items-start">
-                  <span className="text-2xl font-bold">
-                    This is {name}
-                  </span>
+                  <span className="text-2xl font-bold">This is {name}</span>
                 </div>
                 <img
                   src={Bot}
@@ -216,24 +211,24 @@ const ChatUi = () => {
             </div>
 
             {/* displaying user record message */}
-            {
-              isListening && note ?  <div className="chat-message mb-4">
-              <div className="flex items-end justify-end">
-                <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-1 items-end">
-                  <div>
-                    <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
-                      {note}
-                    </span>
+            {isListening && note ? (
+              <div className="chat-message mb-4">
+                <div className="flex items-end justify-end">
+                  <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-1 items-end">
+                    <div>
+                      <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
+                        {note}
+                      </span>
+                    </div>
                   </div>
+                  <img
+                    src={userImage}
+                    alt="My profile"
+                    className="w-14 h-14 rounded-full order-2"
+                  />
                 </div>
-                <img
-                  src={userImage}
-                  alt="My profile"
-                  className="w-14 h-14 rounded-full order-2"
-                />
               </div>
-            </div> : null
-            }
+            ) : null}
 
             {/* displaying user message */}
             {userMsgArr.length
@@ -325,12 +320,28 @@ const ChatUi = () => {
             </div>
 
             {/* Mic button and  stop button */}
-            {
-              isListening ?
-              <FaRegStopCircle onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 text-red-500 cursor-pointer`} />
-              :
-              <AiTwotoneAudio onClick={()=> setIsListening(prev => !prev)} className={`text-3xl mt-2 hover:text-[#3E8A5F] ${isListening ? "text-[#3E8A5F]" : "text-black"} cursor-pointer`} />
-            }
+            {isListening ? (
+              <FaRegStopCircle
+                onClick={() => setIsListening((prev) => !prev)}
+                className={`text-3xl mt-2 text-red-500 cursor-pointer`}
+              />
+            ) : (
+              <AiTwotoneAudio
+                onClick={() => setIsListening((prev) => !prev)}
+                className={`text-3xl mt-2 hover:text-[#3E8A5F] ${
+                  isListening ? "text-[#3E8A5F]" : "text-black"
+                } cursor-pointer`}
+              />
+            )}
+
+            {/* Delete button */}
+            {userMsgArr.length && botMsgArr.length ? (
+              <RiDeleteBin6Line
+                className="text-3xl mt-2 text-red-400 cursor-pointer hover:text-red-600 transition-all duration-150"
+                onClick={deleteChat}
+                title="Delete Chat history"
+              />
+            ) : null}
           </div>
         </div>
         {/* aside section */}
@@ -338,44 +349,43 @@ const ChatUi = () => {
           dangerouslySetInnerHTML={{
             __html:
               "\n.scrollbar-w-2::-webkit-scrollbar {\n  width: 0.25rem;\n  height: 0.25rem;\n}\n\n.scrollbar-track-blue-lighter::-webkit-scrollbar-track {\n  --bg-opacity: 1;\n  background-color: #f7fafc;\n  background-color: rgba(247, 250, 252, var(--bg-opacity));\n}\n\n.scrollbar-thumb-blue::-webkit-scrollbar-thumb {\n  --bg-opacity: 1;\n  background-color: #edf2f7;\n  background-color: rgba(237, 242, 247, var(--bg-opacity));\n}\n\n.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {\n  border-radius: 0.25rem;\n}\n",
-            }}
+          }}
         />
-            <aside className="hidden xl:block overflow-hidden mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
-              <div className="pt-4 mb-16">
-                <p className="text-2xl">Visit my website</p>
-                <img
-                  className="mx-auto h-[100pxx] w-[95px] mt-4"
-                  src={website}
-                  alt="website"
-                />
-              </div>
-              <a
-                href="/"
-                className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
-              >
-                Go to my vegan coach
-              </a>
-            </aside>
+        <aside className="hidden xl:block overflow-hidden mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
+          <div className="pt-4 mb-16">
+            <p className="text-2xl">Visit my website</p>
+            <img
+              className="mx-auto h-[100pxx] w-[95px] mt-4"
+              src={website}
+              alt="website"
+            />
+          </div>
+          <a
+            href="/"
+            className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
+          >
+            Go to my vegan coach
+          </a>
+        </aside>
       </div>
-
 
       {/* Mobile side bar */}
       <aside className="xl:hidden mx-auto w-[264px] bg-white rounded-xl px-2 py-3 mt-4">
-              <div className="pt-4 mb-16">
-                <p className="text-2xl">Visit my website</p>
-                <img
-                  className="mx-auto h-[100pxx] w-[95px] mt-4"
-                  src={website}
-                  alt="website"
-                />
-              </div>
-              <a
-                href="/"
-                className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
-              >
-                Go to my vegan coach
-              </a>
-            </aside>
+        <div className="pt-4 mb-16">
+          <p className="text-2xl">Visit my website</p>
+          <img
+            className="mx-auto h-[100pxx] w-[95px] mt-4"
+            src={website}
+            alt="website"
+          />
+        </div>
+        <a
+          href="/"
+          className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
+        >
+          Go to my vegan coach
+        </a>
+      </aside>
     </section>
   );
 };
