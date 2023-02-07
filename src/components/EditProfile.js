@@ -10,10 +10,10 @@ const EditProfile = () => {
 
     // formik
     const initialValues = {
-        first_name: user?.first_name,
-        last_name: user?.last_name,
-        email: user?.username,
-        phone_number: user?.phone_number,
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone_number: "",
       };
     
       const validationSchema = Yup.object({
