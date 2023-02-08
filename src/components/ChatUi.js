@@ -22,6 +22,10 @@ mic.lang = "en-US";
 const ChatUi = () => {
   const { user, name, setUser, chatHistory, deleteChat } = useAuth();
 
+  // message states
+  const [userMsgArrNew, setUserMsgArrNew] = useState([]);
+  const [botMsgArrNew, setBotMsgArrNew] = useState([]);
+
   // mic states
   const [isListening, setIsListening] = useState(false);
   const [note, setNote] = useState("");
@@ -56,6 +60,9 @@ const ChatUi = () => {
           .get(`chatbot/?task_id=${res.data.task_id}`, config)
           .then((res) => {
             setBotMsgArr([...botMsgArr, res?.data?.data]);
+
+            // set value to state
+            setBotMsgArrNew((prev) => [...prev, res?.data?.data]);
           })
           .catch((err) => {
             console.log(err);
@@ -72,6 +79,7 @@ const ChatUi = () => {
   const onSubmit = async (values) => {
     const newPrompt = values.text;
     setUserMsgArr([...userMsgArr, newPrompt]); // set user msg to local storage
+    setUserMsgArrNew((prev) => [...prev, newPrompt]);
     formik.values.text = "";
 
     // checking if image
@@ -83,7 +91,6 @@ const ChatUi = () => {
           axios
             .get(`${process.env.REACT_APP_BASE_URL}/image/${res.data.task_id}`)
             .then((res) => {
-              console.log(res.data.data[0]);
               setBotMsgArr([
                 ...botMsgArr,
                 JSON.stringify(res.data.data[0].url),
@@ -108,6 +115,13 @@ const ChatUi = () => {
     onSubmit,
   });
 
+  // delete conversation method
+  const handleDeleteConversation = () => {
+    setBotMsgArrNew([]);
+    setUserMsgArrNew([]);
+    deleteChat();
+  };
+
   // scroll to bottom handler
   const scrollToBottom = () => {
     messageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,7 +130,7 @@ const ChatUi = () => {
   // effect for message scroll to bottom
   useEffect(() => {
     scrollToBottom();
-  }, [userMsgArr, botMsgArr]);
+  }, [userMsgArrNew, botMsgArrNew]);
 
   // mic events
   const handleListen = () => {
@@ -170,10 +184,20 @@ const ChatUi = () => {
   // retrive user chat history
   useEffect(() => {
     if (user?.username) {
+      const chatHistory = async () => {
+        const config = {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        };
+
+        const response = await axios.get("chatbot/history/", config);
+
+        // set arrays to states
+        setUserMsgArrNew(response.data.userMsgArr.reverse());
+        setBotMsgArrNew(response.data.botMsgArr.reverse());
+      };
       chatHistory();
     }
-  }, [user]);
-
+  }, [user?.username]);
 
   return (
     <section className="bg-body md:py-16 h-full relative p-4">
@@ -231,8 +255,8 @@ const ChatUi = () => {
             ) : null}
 
             {/* displaying user message */}
-            {userMsgArr.length
-              ? userMsgArr.map((msg, i) => (
+            {botMsgArrNew.length && userMsgArrNew.length
+              ? userMsgArrNew.map((msg, i) => (
                   <div key={i}>
                     <div className="chat-message mb-4">
                       <div className="flex items-end justify-end">
@@ -256,14 +280,14 @@ const ChatUi = () => {
                         <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-2 items-start">
                           <div>
                             <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                              {botMsgArr.length ? (
+                              {botMsgArrNew.length ? (
                                 <>
-                                  {botMsgArr[i] ? (
-                                    botMsgArr[i].startsWith("https://") ? (
+                                  {botMsgArrNew[i] ? (
+                                    botMsgArrNew[i].startsWith("https://") ? (
                                       // <img src={botMsgArr[i]}/>
-                                      <p>{botMsgArr[i]}</p>
+                                      <p>{botMsgArrNew[i]}</p>
                                     ) : (
-                                      botMsgArr[i]
+                                      botMsgArrNew[i]
                                     )
                                   ) : null}
                                 </>
@@ -335,10 +359,11 @@ const ChatUi = () => {
             )}
 
             {/* Delete button */}
-            {userMsgArr.length && botMsgArr.length ? (
+            {userMsgArrNew.length && botMsgArrNew.length ? (
               <RiDeleteBin6Line
                 className="text-3xl mt-2 text-red-400 cursor-pointer hover:text-red-600 transition-all duration-150"
-                onClick={deleteChat}
+                // onClick={deleteChat}
+                onClick={handleDeleteConversation}
                 title="Delete Chat history"
               />
             ) : null}

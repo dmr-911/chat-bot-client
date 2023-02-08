@@ -5,6 +5,7 @@ import useLocalStorage from "./useLocalStorage";
 const useCredentials = () => {
   const [user, setUser] = useState();
   const name = user?.username.split("@")[0];
+  const [loading, setLoading] = useState(false);
 
   // local storage
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
@@ -14,12 +15,18 @@ const useCredentials = () => {
 
   // const user data
   const userData = async (access) => {
+    setLoading(true);
     const config = {
       headers: { Authorization: `Bearer ${access}` },
     };
 
     const response = await axios.get("users/info/", config);
-    setUser(response.data);
+    if (response.data) {
+      setLoading(false);
+      setUser(response.data);
+    } else {
+      setLoading(false);
+    }
   };
 
   // user chat history
@@ -43,15 +50,13 @@ const useCredentials = () => {
         password,
       },
       { withCredentials: true }
-    );  
+    );
     document.cookie = `${data.refresh}`;
     axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
-
 
     // set tokens in local storage
     setAccessToken(data.access);
     setRefreshToken(data.refresh);
-
 
     // retrive user data
     if (data.access) {
@@ -103,9 +108,9 @@ const useCredentials = () => {
 
     const response = await axios.get("chatbot/history/delete/", config);
     console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       localStorage.removeItem("userMsgArr");
-      localStorage.removeItem("botMsgArr")
+      localStorage.removeItem("botMsgArr");
       // setBotMsgArr([]);
     }
   };
@@ -123,6 +128,8 @@ const useCredentials = () => {
     name,
     logOut,
     deleteChat,
+    loading,
+    setLoading,
   };
 };
 
