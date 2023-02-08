@@ -37,10 +37,10 @@ const PrivateRoute = ({ children }) => {
   if (!user?.username && !loading) {
     // not logged in so redirect to login page with the return url
     return <Navigate to="/login" state={{ from: history.location }} />;
+  } else {
+    // authorized so return child components
+    return children;
   }
-
-  // authorized so return child components
-  return children;
 };
 
 export default PrivateRoute;

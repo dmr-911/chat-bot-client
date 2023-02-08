@@ -5,7 +5,7 @@ import useLocalStorage from "./useLocalStorage";
 const useCredentials = () => {
   const [user, setUser] = useState();
   const name = user?.username.split("@")[0];
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // local storage
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
