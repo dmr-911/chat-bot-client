@@ -95,6 +95,7 @@ const ChatUi = () => {
                 ...botMsgArr,
                 JSON.stringify(res.data.data[0].url),
               ]);
+              setBotMsgArrNew((prev) => [...prev, res.data.data[0].url]);
               setNote(null);
             })
             .catch((err) => {
@@ -257,7 +258,7 @@ const ChatUi = () => {
             {/* displaying user message */}
             {botMsgArrNew.length && userMsgArrNew.length
               ? userMsgArrNew.map((msg, i) => (
-                  <div key={i}>
+                  <div key={msg}>
                     <div className="chat-message mb-4">
                       <div className="flex items-end justify-end">
                         <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-1 items-end">
@@ -284,8 +285,10 @@ const ChatUi = () => {
                                 <>
                                   {botMsgArrNew[i] ? (
                                     botMsgArrNew[i].startsWith("https://") ? (
-                                      // <img src={botMsgArr[i]}/>
-                                      <p>{botMsgArrNew[i]}</p>
+                                      <img
+                                        src={botMsgArrNew[i]}
+                                        alt="image"
+                                      />
                                     ) : (
                                       botMsgArrNew[i]
                                     )

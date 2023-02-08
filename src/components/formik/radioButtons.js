@@ -1,17 +1,19 @@
 import React from "react";
 import { Field, ErrorMessage } from "formik";
-import TextError from '../textError/textError';
+import TextError from "../textError/textError";
 
 const RadioButtons = (props) => {
   const { label, name, options, ...rest } = props;
   return (
     <div className="form-control">
-      <label htmlFor={name} className="text-[#142330]">{label}</label>
+      <label htmlFor={name} className="text-[#142330]">
+        {label}
+      </label>
       <Field name={name} {...rest}>
         {({ field }) => {
           return options.map((option, i) => {
             return (
-              <React.Fragment key={i}>
+              <React.Fragment key={option}>
                 <input
                   type="radio"
                   id={option.value}
@@ -26,7 +28,7 @@ const RadioButtons = (props) => {
           });
         }}
       </Field>
-      <ErrorMessage name={name} component={TextError}/>
+      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 };

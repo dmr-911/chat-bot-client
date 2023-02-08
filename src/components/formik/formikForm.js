@@ -8,7 +8,7 @@ import {
   FastField,
 } from "formik";
 import * as Yup from "yup";
-import TextError from '../textError/textError';
+import TextError from "../textError/textError";
 
 const initialValues = {
   name: "Mizan",
@@ -42,7 +42,7 @@ const onSubmit = (values, onSubmitProps) => {
   // console.log("values", values);
   // console.log("submit props", onSubmitProps);
   onSubmitProps.setSubmitting(false);
-  onSubmitProps.resetForm()
+  onSubmitProps.resetForm();
 };
 
 const validationSchema = Yup.object({
@@ -61,7 +61,7 @@ const validateComments = (value) => {
 };
 
 const FormikReg = () => {
-  const[formValues, setFormValues] = useState(null);
+  const [formValues, setFormValues] = useState(null);
   return (
     <div className="container mx-auto">
       <Formik
@@ -154,7 +154,7 @@ const FormikReg = () => {
                     return (
                       <div>
                         {phNumbers.map((phNumber, i) => (
-                          <div key={i}>
+                          <div key={phNumber}>
                             <Field name={`phNumbers[${i}]`} />
                             {i > 0 && (
                               <button type="button" onClick={() => remove(i)}>
@@ -212,14 +212,14 @@ const FormikReg = () => {
               </button> */}
               <button
                 type="button"
-                onClick={() =>setFormValues(savedValues)}
+                onClick={() => setFormValues(savedValues)}
                 className="border-2 border-black px-4 mr-2"
               >
                 Load saved data
               </button>
               <button
                 type="reset"
-                onClick={() =>setFormValues(savedValues)}
+                onClick={() => setFormValues(savedValues)}
                 className="border-2 border-black px-4 mr-2"
               >
                 Reset
