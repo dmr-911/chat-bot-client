@@ -90,7 +90,7 @@ const useCredentials = () => {
         }
       })
       .catch((err) => {
-        console.log(err.response);
+        console.clear();
       });
   };
 
@@ -110,12 +110,12 @@ const useCredentials = () => {
     };
 
     const response = await axios.get("chatbot/history/delete/", config);
-    console.log(response);
     if (response.status === 200) {
       localStorage.removeItem("userMsgArr");
       localStorage.removeItem("botMsgArr");
       // setBotMsgArr([]);
     }
+    console.clear();
   };
 
   return {

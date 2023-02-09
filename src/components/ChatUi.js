@@ -68,11 +68,13 @@ const ChatUi = () => {
           .catch((err) => {
             setBotMsgArr([...botMsgArr, "Please try again"]);
             setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+            console.clear();
           });
       })
       .catch((err) => {
         setBotMsgArr([...botMsgArr, "Please try again"]);
         setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+        console.clear();
       });
   };
 
@@ -102,12 +104,14 @@ const ChatUi = () => {
             .catch((err) => {
               setBotMsgArr([...botMsgArr, "Please try again"]);
               setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+              console.clear();
             });
         })
         .catch((err) => {
           console.log(err.response);
           setBotMsgArr([...botMsgArr, "Please try again"]);
           setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+          console.clear();
         });
     } else {
       // if not image
