@@ -10,6 +10,7 @@ import website from "../images/cuate.png";
 import userImage from "../images/user.png";
 import { FaRegStopCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { TypeAnimation } from "react-type-animation";
 
 const SpeechRecognition =
   window.speechRecognition || window.webkitSpeechRecognition;
@@ -65,13 +66,13 @@ const ChatUi = () => {
             setBotMsgArrNew((prev) => [...prev, res?.data?.data]);
           })
           .catch((err) => {
-            console.log(err);
             setBotMsgArr([...botMsgArr, "Please try again"]);
+            setBotMsgArrNew((prev) => [...prev, "Please try again"]);
           });
       })
       .catch((err) => {
-        console.log(err);
         setBotMsgArr([...botMsgArr, "Please try again"]);
+        setBotMsgArrNew((prev) => [...prev, "Please try again"]);
       });
   };
 
@@ -100,11 +101,13 @@ const ChatUi = () => {
             })
             .catch((err) => {
               setBotMsgArr([...botMsgArr, "Please try again"]);
+              setBotMsgArrNew((prev) => [...prev, "Please try again"]);
             });
         })
         .catch((err) => {
           console.log(err.response);
           setBotMsgArr([...botMsgArr, "Please try again"]);
+          setBotMsgArrNew((prev) => [...prev, "Please try again"]);
         });
     } else {
       // if not image
@@ -285,12 +288,17 @@ const ChatUi = () => {
                                 <>
                                   {botMsgArrNew[i] ? (
                                     botMsgArrNew[i].startsWith("https://") ? (
-                                      <img
-                                        src={botMsgArrNew[i]}
-                                        alt="image"
-                                      />
+                                      <img src={botMsgArrNew[i]} alt="image" />
                                     ) : (
                                       botMsgArrNew[i]
+                                      // <TypeAnimation
+                                      //   cursor={false}
+                                      //   // Same String at the start will only be typed once, initially
+                                      //   sequence={[botMsgArrNew[i], 1000]}
+                                      //   speed={50} // Custom Speed from 1-99 - Default Speed: 40
+                                      //   wrapper="span" // Animation will be rendered as a <span>
+
+                                      // />
                                     )
                                   ) : null}
                                 </>
