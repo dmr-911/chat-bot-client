@@ -17,16 +17,19 @@ const useCredentials = () => {
   const userData = async (access) => {
     setLoading(true);
     const config = {
-      headers: { Authorization: `Bearer ${access}` },
+      headers: { Authorization: `Bearer ${access || accessToken}` },
     };
-
-    const response = await axios.get("users/info/", config);
-    if (response.data) {
-      setLoading(false);
-      setUser(response.data);
-    } else {
-      setLoading(false);
-    }
+    // get user data
+    axios
+      .get("users/info/", config)
+      .then((response) => {
+        setLoading(false);
+        setUser(response.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.clear();
+      });
   };
 
   // user chat history
@@ -118,6 +121,7 @@ const useCredentials = () => {
   return {
     user,
     setUser,
+    userData,
     login,
     signUp,
     chatHistory,

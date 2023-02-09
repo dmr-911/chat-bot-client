@@ -5,26 +5,16 @@ import { ChatContext } from "../context/AuthProvider";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const PrivateRoute = ({ children }) => {
-  const { user, setUser, loading, setLoading } = useContext(ChatContext);
+  const { user, userData, setUser, loading, setLoading } =
+    useContext(ChatContext);
   const history = useNavigate();
 
   // const access token
   const [access, setAccess] = useLocalStorage("accessToken", "");
 
+  // effect for user load
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const config = {
-        headers: { Authorization: `Bearer ${access}` },
-      };
-      const response = await axios.get("users/info/", config);
-      if (response.data) {
-        setLoading(false);
-        setUser(response.data);
-      } else {
-        setLoading(false);
-      }
-    })();
+    userData();
   }, []);
 
   if (loading)

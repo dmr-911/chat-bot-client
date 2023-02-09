@@ -9,6 +9,7 @@ import Bot from "../../images/bot.png";
 const Profile = () => {
   const { user, logOut } = useAuth();
 
+  // image states
   const [image, setImage] = useState({});
   const [imageUrl, setImageUrl] = useState(null);
   const [file, setFile] = useState({
@@ -58,12 +59,12 @@ const Profile = () => {
               <div
                 className="border-4 cursor-pointer border-black
              hover:border-gray-800 hover:bg-gray-200 p-2 rounded-full transition-all duration-150"
+                onClick={handleProfileClick}
               >
                 <img
                   src={imageUrl ? imageUrl : Bot}
                   alt="My profile"
                   className="w-14 h-14 rounded-full cursor-pointer"
-                  onClick={handleProfileClick}
                 />
               </div>
               <p className="text-3xl">{user?.first_name}</p>
