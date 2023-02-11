@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "./useLocalStorage";
 
 const useCredentials = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const name = user?.username.split("@")[0];
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
@@ -112,7 +112,7 @@ const useCredentials = () => {
           });
           if (user?.name) {
             setLoading(false);
-            history.push("/");
+            history("/");
           }
         }
       })
@@ -120,15 +120,6 @@ const useCredentials = () => {
         setErrors(err.response.data.email);
         console.clear();
       });
-  };
-
-  // log out
-  const logOut = () => {
-    setAccessToken("");
-    setRefreshToken("");
-    setUser(null);
-    setUserMsgArr([]);
-    setBotMsgArr([]);
   };
 
   // delete user chat history
@@ -144,6 +135,17 @@ const useCredentials = () => {
       // setBotMsgArr([]);
     }
     console.clear();
+  };
+
+  // log out
+  const logOut = () => {
+    // history.push("/login");
+    history("/login");
+    setAccessToken("");
+    setRefreshToken("");
+    setUser(null);
+    setUserMsgArr([]);
+    setBotMsgArr([]);
   };
 
   return {

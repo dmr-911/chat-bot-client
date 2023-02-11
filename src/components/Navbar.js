@@ -5,7 +5,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-
   const { user, name, logOut } = useAuth();
 
   // router navigation
@@ -38,13 +37,24 @@ const Navbar = () => {
               </select>
             </div>
             <div className="flex gap-2 items-center">
-              <span>{name ? <NavLink to="/profile">{name}</NavLink> : null}</span>
-              <img
-                onClick={()=>logOut()}
+              <span>
+                {user?.first_name ? (
+                  <NavLink to="/profile">{user?.first_name}</NavLink>
+                ) : null}
+              </span>
+              {/* <img
                 className="h-[50px] w-[50px] rounded-full cursor-pointer"
                 src={Bot}
                 alt="User"
-              />
+              /> */}
+              {user?.username && (
+                <button
+                  onClick={() => logOut()}
+                  className="bg-red-500 text-white px-2 py-1 hover:bg-red-600 text-sm font-bold transition-all duration-150"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>

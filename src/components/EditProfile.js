@@ -1,12 +1,15 @@
+import axios from "axios";
 import { Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
 import useAuth from "../hooks/useAuth";
+import useLocalStorage from "../hooks/useLocalStorage";
 import FormikControl from "./formik/formikControl";
 import ProfileLayout from "./ProfileLayout";
 
 const EditProfile = () => {
-  const { user } = useAuth();
+  const { user, userData } = useAuth();
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
 
   // formik
   const initialValues = {
@@ -19,12 +22,33 @@ const EditProfile = () => {
   const validationSchema = Yup.object({
     first_name: Yup.string().required("First name required!"),
     last_name: Yup.string().required("Last name required!"),
-    email: Yup.string().email("Invalid email").required("Email required!"),
+    // email: Yup.string().email("Invalid email").required("Email required!"),
     phone_number: Yup.string(),
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    };
+
+    axios
+      .patch(
+        `users/${user.id}/`,
+        {
+          first_name: values.first_name,
+          last_name: values.last_name,
+          phone_number: values.phone_number,
+        },
+        config
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          userData(accessToken);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   // effect for user details

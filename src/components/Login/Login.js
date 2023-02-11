@@ -40,7 +40,7 @@ const Login = () => {
   // user checking
   useEffect(() => {
     userData(accessToken);
-  }, [accessToken]);
+  }, [user?.username]);
 
   if (user?.username) {
     return <Navigate to={destination} />;
