@@ -69,9 +69,13 @@ const useCredentials = () => {
         headers: { Authorization: `Bearer ${data.access}` },
       };
 
-      const response = await axios.get("users/info/", config);
-      setUser(response.data);
-      chatHistory(data.access);
+      try {
+        const response = await axios.get("users/info/", config);
+        setUser(response.data);
+        chatHistory(data.access);
+      } catch (err) {
+        console.clear();
+      }
     }
   };
 

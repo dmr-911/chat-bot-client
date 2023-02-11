@@ -51,38 +51,42 @@ const ChatUi = () => {
 
   // text to server handler
   const textToServer = async (user_input) => {
-    await axios
-      .post(`chatbot/`, { user_input, language: "English" }, config, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        // getting response
-        axios
-          .get(`chatbot/?task_id=${res.data.task_id}`, config)
-          .then((res) => {
-            setBotMsgArr([...botMsgArr, res?.data?.data]);
+    if (user_input) {
+      await axios
+        .post(`chatbot/`, { user_input, language: "English" }, config, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          // getting response
+          axios
+            .get(`chatbot/?task_id=${res.data.task_id}`, config)
+            .then((res) => {
+              setBotMsgArr([...botMsgArr, res?.data?.data]);
 
-            // set value to state
-            setBotMsgArrNew((prev) => [...prev, res?.data?.data]);
-          })
-          .catch((err) => {
-            setBotMsgArr([...botMsgArr, "Please try again"]);
-            setBotMsgArrNew((prev) => [...prev, "Please try again"]);
-            console.clear();
-          });
-      })
-      .catch((err) => {
-        setBotMsgArr([...botMsgArr, "Please try again"]);
-        setBotMsgArrNew((prev) => [...prev, "Please try again"]);
-        console.clear();
-      });
+              // set value to state
+              setBotMsgArrNew((prev) => [...prev, res?.data?.data]);
+            })
+            .catch((err) => {
+              setBotMsgArr([...botMsgArr, "Please try again"]);
+              setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+              console.clear();
+            });
+        })
+        .catch((err) => {
+          setBotMsgArr([...botMsgArr, "Please try again"]);
+          setBotMsgArrNew((prev) => [...prev, "Please try again"]);
+          console.clear();
+        });
+    }
   };
 
   // submit form handler
   const onSubmit = async (values) => {
     const newPrompt = values.text;
-    setUserMsgArr([...userMsgArr, newPrompt]); // set user msg to local storage
-    setUserMsgArrNew((prev) => [...prev, newPrompt]);
+    if (newPrompt) {
+      setUserMsgArr([...userMsgArr, newPrompt]); // set user msg to local storage
+      setUserMsgArrNew((prev) => [...prev, newPrompt]);
+    }
     formik.values.text = "";
 
     // checking if image
@@ -265,7 +269,7 @@ const ChatUi = () => {
             {/* displaying user message */}
             {botMsgArrNew.length && userMsgArrNew.length
               ? userMsgArrNew.map((msg, i) => (
-                  <div key={msg}>
+                  <div key={new Date().getTime() + msg}>
                     <div className="chat-message mb-4">
                       <div className="flex items-end justify-end">
                         <div className="flex flex-col space-y-2 text-base max-w-xs mx-2 order-1 items-end">
