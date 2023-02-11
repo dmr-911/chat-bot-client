@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useLocalStorage from "./useLocalStorage";
 
 const useCredentials = () => {
@@ -17,7 +17,7 @@ const useCredentials = () => {
   const [botMsgArr, setBotMsgArr] = useLocalStorage("botMsgArr", []);
 
   // const user data
-  const userData = async (access) => {
+  const userData = async (access, location = "") => {
     setLoading(true);
     const config = {
       headers: { Authorization: `Bearer ${access || accessToken}` },

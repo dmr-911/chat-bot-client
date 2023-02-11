@@ -31,6 +31,8 @@ const Login = () => {
 
   // Error toast
   const notify = (error) => toast.error(error);
+
+  
   useEffect(() => {
     if (errors.length) {
       errors.forEach((error) => notify(error));

@@ -42,18 +42,20 @@ const Navbar = () => {
                   <NavLink to="/profile">{user?.first_name}</NavLink>
                 ) : null}
               </span>
-              {/* <img
-                className="h-[50px] w-[50px] rounded-full cursor-pointer"
-                src={Bot}
-                alt="User"
-              /> */}
-              {user?.username && (
+
+              {user?.username ? (
                 <button
                   onClick={() => logOut()}
                   className="bg-red-500 text-white px-2 py-1 hover:bg-red-600 text-sm font-bold transition-all duration-150"
                 >
                   Logout
                 </button>
+              ) : (
+                <img
+                  className="h-[50px] w-[50px] rounded-full cursor-pointer"
+                  src={Bot}
+                  alt="User"
+                />
               )}
             </div>
           </div>

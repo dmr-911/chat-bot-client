@@ -6,10 +6,17 @@ import useAuth from "../hooks/useAuth";
 import useLocalStorage from "../hooks/useLocalStorage";
 import FormikControl from "./formik/formikControl";
 import ProfileLayout from "./ProfileLayout";
+import toast, { Toaster } from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 const EditProfile = () => {
   const { user, userData } = useAuth();
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
+  const location = useLocation();
+  console.log(location.pathname);
+
+  // Toast
+  const notify = () => toast.success("Profile updated");
 
   // formik
   const initialValues = {
@@ -43,15 +50,14 @@ const EditProfile = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          userData(accessToken);
+          notify();
+          userData(accessToken, location.pathname);
         }
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
-
-  // effect for user details
 
   return (
     <ProfileLayout>
@@ -104,6 +110,7 @@ const EditProfile = () => {
             );
           }}
         </Formik>
+        <Toaster position="top-center" reverseOrder={true} />
       </section>
     </ProfileLayout>
   );
