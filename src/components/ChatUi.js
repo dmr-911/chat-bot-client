@@ -21,7 +21,7 @@ mic.interimResults = true;
 mic.lang = "en-US";
 
 const ChatUi = () => {
-  const { user, name, setUser, chatHistory, deleteChat } = useAuth();
+  const { user, name, setUser, chatHistory, deleteChat, errors } = useAuth();
 
   // message states
   const [userMsgArrNew, setUserMsgArrNew] = useState([]);

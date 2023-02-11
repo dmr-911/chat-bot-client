@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../formik/formikControl";
 import { Navigate, NavLink, useLocation } from "react-router-dom";
 import useCredentials from "../../hooks/useCredentials";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
   // location trace
+
   const location = useLocation();
   const destination = location?.state?.from || "/";
 
-  const { user, signUp } = useCredentials();
-
+  const { user, signUp, errors } = useCredentials();
+  console.log("sign", errors);
   // formik start
   const options = [
     { key: "Female", value: "female" },
@@ -40,15 +42,23 @@ const SignUp = () => {
     //   .required("Required!"),
   });
 
+  const notify = (error) => toast.error(error);
   const onSubmit = (values) => {
     console.log(values);
     signUp(values);
   };
 
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((error) => notify(error));
+    }
+  }, [errors]);
+
   // redirect
   if (user?.username || user?.first_name) {
     return <Navigate to={destination} />;
   }
+
   return (
     <>
       <section className="bg-body md:py-16 h-full relative p-4">
@@ -135,6 +145,7 @@ const SignUp = () => {
           </div>
         </div>
       </section>
+      <Toaster position="top-center" reverseOrder={true} />
     </>
   );
 };

@@ -7,6 +7,7 @@ const useCredentials = () => {
   const [user, setUser] = useState();
   const name = user?.username.split("@")[0];
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState([]);
   const history = useNavigate();
 
   // local storage
@@ -85,6 +86,7 @@ const useCredentials = () => {
     axios
       .post("users/", data)
       .then((res) => {
+        setErrors([]);
         // set tokens in local storage
         setAccessToken(res?.data?.tokens?.access);
         setRefreshToken(res?.data?.tokens?.refresh);
@@ -107,6 +109,7 @@ const useCredentials = () => {
         }
       })
       .catch((err) => {
+        setErrors(err.response.data.email);
         console.clear();
       });
   };
@@ -135,6 +138,7 @@ const useCredentials = () => {
     console.clear();
   };
 
+  console.log(errors);
   return {
     user,
     setUser,
@@ -142,6 +146,7 @@ const useCredentials = () => {
     login,
     signUp,
     chatHistory,
+    errors,
     accessToken,
     refreshToken,
     userMsgArr,
