@@ -49,34 +49,42 @@ const useCredentials = () => {
 
   // login user
   const login = async (email, password) => {
-    const { data } = await axios.post(
-      "auth/login/",
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    document.cookie = `${data.refresh}`;
-    axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
+    try {
+      const { data } = await axios.post(
+        "auth/login/",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setErrors([]);
+      document.cookie = `${data.refresh}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
 
-    // set tokens in local storage
-    setAccessToken(data.access);
-    setRefreshToken(data.refresh);
+      // set tokens in local storage
+      setAccessToken(data.access);
+      setRefreshToken(data.refresh);
 
-    // retrive user data
-    if (data.access) {
-      const config = {
-        headers: { Authorization: `Bearer ${data.access}` },
-      };
+      // retrive user data
+      if (data.access) {
+        const config = {
+          headers: { Authorization: `Bearer ${data.access}` },
+        };
 
-      try {
-        const response = await axios.get("users/info/", config);
-        setUser(response.data);
-        chatHistory(data.access);
-      } catch (err) {
-        console.clear();
+        try {
+          const response = await axios.get("users/info/", config);
+          setUser(response.data);
+          chatHistory(data.access);
+        } catch (err) {
+          setLoading(false);
+
+          console.clear();
+        }
       }
+    } catch (err) {
+      setErrors((prev) => [...prev, err.response.data.detail]);
+      console.clear();
     }
   };
 
@@ -138,7 +146,6 @@ const useCredentials = () => {
     console.clear();
   };
 
-  console.log(errors);
   return {
     user,
     setUser,
