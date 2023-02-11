@@ -5,15 +5,17 @@ import FormikControl from "../formik/formikControl";
 import { Navigate, NavLink, useLocation } from "react-router-dom";
 import useCredentials from "../../hooks/useCredentials";
 import toast, { Toaster } from "react-hot-toast";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const SignUp = () => {
   // location trace
 
   const location = useLocation();
   const destination = location?.state?.from || "/";
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
 
-  const { user, signUp, errors } = useCredentials();
-  console.log("sign", errors);
+  const { user, signUp, errors, userData } = useCredentials();
+
   // formik start
   const options = [
     { key: "Female", value: "female" },
@@ -53,6 +55,10 @@ const SignUp = () => {
       errors.forEach((error) => notify(error));
     }
   }, [errors]);
+  // user checking
+  useEffect(() => {
+    userData(accessToken);
+  }, [accessToken]);
 
   // redirect
   if (user?.username || user?.first_name) {

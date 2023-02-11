@@ -4,13 +4,15 @@ import { Navigate, NavLink, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useCredentials from "../../hooks/useCredentials";
 import toast, { Toaster } from "react-hot-toast";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Login = () => {
   const location = useLocation();
   const destination = location?.state?.from || "/";
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
 
   // useCredentials
-  const { user, login, errors } = useCredentials();
+  const { user, login, errors, userData } = useCredentials();
 
   // formik
   const initialValues = {
@@ -34,6 +36,11 @@ const Login = () => {
       errors.forEach((error) => notify(error));
     }
   }, [errors]);
+
+  // user checking
+  useEffect(() => {
+    userData(accessToken);
+  }, [accessToken]);
 
   if (user?.username) {
     return <Navigate to={destination} />;

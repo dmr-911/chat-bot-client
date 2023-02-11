@@ -5,6 +5,8 @@ import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import ProfileLayout from "../ProfileLayout";
 import Bot from "../../images/bot.png";
+import axios from "axios";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Profile = () => {
   const { user, logOut } = useAuth();
@@ -15,6 +17,8 @@ const Profile = () => {
   const [file, setFile] = useState({
     selectedFile: null,
   });
+
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
 
   // File ref
   const fileRef = useRef();
@@ -32,13 +36,34 @@ const Profile = () => {
   const handleUpload = () => {
     // Create an object of formData
     const formData = new FormData();
+    console.log(image);
 
     // Update the formData object
     formData.append("myFile", file.selectedFile, file.selectedFile.name);
+    formData.append("title", "Profile image");
+    formData.append("body", "body");
 
     // Details of the uploaded file
     // console.log(file.selectedFile);
-    console.log("form data", ...formData);
+    // console.log("form data", ...formData);
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    };
+
+    axios
+      .put(
+        `users/${user.id}/`,
+        {
+          profile_picture: formData,
+        },
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   // image effect
