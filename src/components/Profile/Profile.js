@@ -37,7 +37,7 @@ const Profile = () => {
     formData.append("myFile", file.selectedFile, file.selectedFile.name);
 
     // Details of the uploaded file
-    console.log(file.selectedFile);
+    // console.log(file.selectedFile);
     console.log("form data", ...formData);
   };
 

@@ -154,7 +154,7 @@ const FormikReg = () => {
                     return (
                       <div>
                         {phNumbers.map((phNumber, i) => (
-                          <div key={phNumber}>
+                          <div key={phNumber + i}>
                             <Field name={`phNumbers[${i}]`} />
                             {i > 0 && (
                               <button type="button" onClick={() => remove(i)}>

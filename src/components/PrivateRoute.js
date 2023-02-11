@@ -8,14 +8,17 @@ const PrivateRoute = ({ children }) => {
   const { user, userData, setUser, loading, setLoading } =
     useContext(ChatContext);
   const history = useNavigate();
+  console.log(user);
 
   // const access token
   const [access, setAccess] = useLocalStorage("accessToken", "");
 
   // effect for user load
   useEffect(() => {
-    userData();
-  }, []);
+    if (!user?.username) {
+      userData(access);
+    }
+  }, [user]);
 
   if (loading)
     return (

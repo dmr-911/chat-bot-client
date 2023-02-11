@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useLocalStorage from "./useLocalStorage";
 
 const useCredentials = () => {
   const [user, setUser] = useState();
   const name = user?.username.split("@")[0];
   const [loading, setLoading] = useState(true);
+  const history = useNavigate();
 
   // local storage
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
@@ -20,22 +22,22 @@ const useCredentials = () => {
       headers: { Authorization: `Bearer ${access || accessToken}` },
     };
     // get user data
-    axios
-      .get("users/info/", config)
-      .then((response) => {
+    try {
+      const response = await axios.get("users/info/", config);
+      if (response.data) {
         setLoading(false);
         setUser(response.data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.clear();
-      });
+      }
+    } catch (err) {
+      setLoading(false);
+      console.clear();
+    }
   };
 
   // user chat history
   const chatHistory = async (access) => {
     const config = {
-      headers: { Authorization: `Bearer ${accessToken || access}` },
+      headers: { Authorization: `Bearer ${access ? access : accessToken}` },
     };
 
     const response = await axios.get("chatbot/history/", config);
@@ -75,18 +77,29 @@ const useCredentials = () => {
 
   // register method
   const signUp = async (data) => {
+    console.log(data);
     axios
       .post("users/", data)
       .then((res) => {
-        console.log(res);
         // set tokens in local storage
-        setAccessToken(res.tokens.access);
-        setRefreshToken(res.tokens.refresh);
+        setAccessToken(res?.data?.tokens?.access);
+        setRefreshToken(res?.data?.tokens?.refresh);
 
-        if (res.tokens.access) {
-          console.log(res.tokens);
+        if (res?.data?.tokens?.access) {
           // data retrive
-          userData(res.tokens.access);
+          // userData(res.data.tokens.access);
+          setUser({
+            first_name: res.data.first_name,
+            id: res.data.id,
+            last_name: res.data.last_name,
+            phone_number: res.data.phone_number,
+            profile_picture: res.data.profile_picture,
+            username: res.data.email,
+          });
+          if (user?.name) {
+            setLoading(false);
+            history.push("/");
+          }
         }
       })
       .catch((err) => {
