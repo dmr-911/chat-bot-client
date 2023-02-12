@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { Navigate, NavLink, useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import useCredentials from "../../hooks/useCredentials";
 import toast, { Toaster } from "react-hot-toast";
 import useLocalStorage from "../../hooks/useLocalStorage";

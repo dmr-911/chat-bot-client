@@ -1,11 +1,11 @@
 import React from "react";
 import Logo from "../images/LOGO-SECONDARIO.svg";
 import Bot from "../images/bot.png";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-  const { user, name, logOut } = useAuth();
+  const { user, logOut } = useAuth();
 
   // router navigation
   const navigate = useNavigate();

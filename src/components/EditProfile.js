@@ -1,16 +1,16 @@
 import axios from "axios";
 import { Form, Formik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import * as Yup from "yup";
 import useAuth from "../hooks/useAuth";
 import useLocalStorage from "../hooks/useLocalStorage";
 import FormikControl from "./formik/formikControl";
 import ProfileLayout from "./ProfileLayout";
 import toast, { Toaster } from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
-  const { user, userData, setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
   const navigate = useNavigate();
 
@@ -51,6 +51,7 @@ const EditProfile = () => {
         if (res.status === 200) {
           setUser(res.data);
           notify();
+          navigate("/profile")
         }
       })
       .catch((err) => {
