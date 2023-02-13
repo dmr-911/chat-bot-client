@@ -212,15 +212,15 @@ const ChatUi = () => {
   }, [user?.username]);
 
   return (
-    <section className="bg-body md:py-16 h-full relative p-4">
+    <section className="bg-body md:py-16 relative overflow-hidden">
       {/* main chat section */}
-      <div className="xl:w-[860px] bg-white mx-auto rounded-xl relative">
+      <div className="xl:w-[860px] h-[60rem] chat-div mx-auto md:rounded-xl relative pt-4 my-4 md:my-0">
         {/* component */}
-        <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[55vh] overflow-hidden">
+        <div className="flex-1 bg-white justify-between flex flex-col h-[34rem] xl:h-[45.5rem] px-2 overflow-hidden relative pt-4 md:rounded-xl">
           {/* <div className="flex-1 sm:p-6 justify-between flex flex-col h-screen xl:h-[860px] overflow-hidden"> */}
           <div
             id="messages"
-            className="absolute w-full left-0 bottom-20 h-[75vh] flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-hide"
+            className="absolute w-full h-[83.2%] md:h-[86%] left-0 flex flex-col space-y-4 px-3 overflow-y-auto scrollbar-hide"
           >
             <div className="chat-message">
               <div className="flex items-center">
@@ -326,8 +326,10 @@ const ChatUi = () => {
               : null}
             <div ref={messageRef} />
           </div>
-          <div className="w-full absolute left-0 bottom-8 border-t-2 bg-white border-gray-200 px-4 pt-4 mb-2 sm:mb-0 flex xl:gap-4">
-            <div className="relative flex flex-grow">
+
+          {/* Input and search section */}
+          <div className="w-full absolute flex items-center left-0 bottom-4 md:bottom-8 border-t-2 bg-white border-gray-200 px-4 mb-2 sm:mb-0 xl:gap-4">
+            <div className="relative flex flex-grow mt-4">
               <form
                 onSubmit={formik.handleSubmit}
                 className="w-full relative flex"
@@ -389,13 +391,7 @@ const ChatUi = () => {
           </div>
         </div>
         {/* aside section */}
-        <style
-          dangerouslySetInnerHTML={{
-            __html:
-              "\n.scrollbar-w-2::-webkit-scrollbar {\n  width: 0.25rem;\n  height: 0.25rem;\n}\n\n.scrollbar-track-blue-lighter::-webkit-scrollbar-track {\n  --bg-opacity: 1;\n  background-color: #f7fafc;\n  background-color: rgba(247, 250, 252, var(--bg-opacity));\n}\n\n.scrollbar-thumb-blue::-webkit-scrollbar-thumb {\n  --bg-opacity: 1;\n  background-color: #edf2f7;\n  background-color: rgba(237, 242, 247, var(--bg-opacity));\n}\n\n.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {\n  border-radius: 0.25rem;\n}\n",
-          }}
-        />
-        <aside className="hidden xl:block overflow-hidden mx-auto xl:mx-0 xl:relative xl:h-[300px] xl:-right-[20rem] xl:ml-auto w-[264px] bg-white rounded-xl px-2 py-3">
+        <aside className="aside absolute bottom-[22.5%] -right-[18rem] mx-auto w-[264px] bg-white rounded-xl px-2 py-3 mt-4">
           <div className="pt-4 mb-16">
             <p className="text-2xl">Visit my website</p>
             <img
@@ -411,25 +407,13 @@ const ChatUi = () => {
             Go to my vegan coach
           </a>
         </aside>
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              "\n.scrollbar-w-2::-webkit-scrollbar {\n  width: 0.25rem;\n  height: 0.25rem;\n}\n\n.scrollbar-track-blue-lighter::-webkit-scrollbar-track {\n  --bg-opacity: 1;\n  background-color: #f7fafc;\n  background-color: rgba(247, 250, 252, var(--bg-opacity));\n}\n\n.scrollbar-thumb-blue::-webkit-scrollbar-thumb {\n  --bg-opacity: 1;\n  background-color: #edf2f7;\n  background-color: rgba(237, 242, 247, var(--bg-opacity));\n}\n\n.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {\n  border-radius: 0.25rem;\n}\n",
+          }}
+        />
       </div>
-
-      {/* Mobile side bar */}
-      <aside className="xl:hidden mx-auto w-[264px] bg-white rounded-xl px-2 py-3 mt-4">
-        <div className="pt-4 mb-16">
-          <p className="text-2xl">Visit my website</p>
-          <img
-            className="mx-auto h-[100pxx] w-[95px] mt-4"
-            src={website}
-            alt="website"
-          />
-        </div>
-        <a
-          href="/"
-          className="bg-[#3E8A5F] text-white rounded-md py-3 relative block w-full"
-        >
-          Go to my vegan coach
-        </a>
-      </aside>
     </section>
   );
 };

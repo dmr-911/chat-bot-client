@@ -51,7 +51,7 @@ const EditProfile = () => {
         if (res.status === 200) {
           setUser(res.data);
           notify();
-          navigate("/profile")
+          navigate("/profile");
         }
       })
       .catch((err) => {
