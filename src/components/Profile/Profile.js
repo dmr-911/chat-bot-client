@@ -77,10 +77,10 @@ const Profile = () => {
   return (
     <ProfileLayout>
       {/* details section */}
-      <section className="flex flex-col text-left px-4 md:px-32 mt-24">
+      <section className="flex flex-col text-left px-4 md:px-32 my-24">
         <div className="w-full flex justify-between">
           <div className="flex gap-2 flex-col">
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <div
                 className="border-4 cursor-pointer border-black
              hover:border-gray-800 hover:bg-gray-200 p-2 rounded-full transition-all duration-150"
@@ -123,20 +123,30 @@ const Profile = () => {
           </Link>
         </div>
 
-        <div className="my-6">
+        {/* name,email,phone part  */}
+
+        <div className="my-3">
+          <span className="text-[#716A7D] text-sm">First Name</span>
+          <p className="text-[#142330] font-medium">{user?.first_name}</p>
+        </div>
+        <div className="my-3">
+          <span className="text-[#716A7D] text-sm">Last Name</span>
+          <p className="text-[#142330] font-medium">{user?.last_name}</p>
+        </div>
+        <div className="my-3">
           <span className="text-[#716A7D] text-sm">Email</span>
           <p className="text-[#142330] font-medium">{user?.username}</p>
         </div>
-        <div className="my-6">
+        <div className="my-3">
           <span className="text-[#716A7D] text-sm">Phone</span>
           <p className="text-[#142330] font-medium">{user?.phone_number}</p>
         </div>
-        <div className="my-6">
+        <div className="my-3">
           <span className="text-[#716A7D] text-sm">Address</span>
           <p className="text-[#142330] font-medium">Dhaka</p>
         </div>
         {/* logout button */}
-        <div className="text-xl font-bold flex items-center pb-8">
+        <div className="text-xl font-bold flex items-center text-red-600 mt-4">
           <HiOutlineLogout
             className="text-2xl cursor-pointer"
             onClick={() => logOut()}
