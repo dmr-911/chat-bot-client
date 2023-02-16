@@ -128,13 +128,18 @@ const useCredentials = () => {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
 
-    const response = await axios.get("chatbot/history/delete/", config);
-    if (response.status === 200) {
-      localStorage.removeItem("userMsgArr");
-      localStorage.removeItem("botMsgArr");
-      // setBotMsgArr([]);
+    try {
+      const response = await axios.get("chatbot/history/delete/", config);
+      console.log(response);
+      if (response.status === 200) {
+        localStorage.removeItem("userMsgArr");
+        localStorage.removeItem("botMsgArr");
+        // setBotMsgArr([]);
+      }
+    } catch (err) {
+      console.log(err);
     }
-    console.clear();
+    // console.clear();
   };
 
   // log out

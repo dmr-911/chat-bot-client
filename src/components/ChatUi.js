@@ -128,10 +128,25 @@ const ChatUi = () => {
   });
 
   // delete conversation method
-  const handleDeleteConversation = () => {
-    setBotMsgArrNew([]);
-    setUserMsgArrNew([]);
-    deleteChat();
+  const handleDeleteConversation = async () => {
+    // deleteChat();
+
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    };
+
+    try {
+      const response = await axios.get("chatbot/history/delete/", config);
+      console.log(response);
+      if (response.status === 200) {
+        localStorage.removeItem("userMsgArr");
+        localStorage.removeItem("botMsgArr");
+        setBotMsgArrNew([]);
+        setUserMsgArrNew([]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // scroll to bottom handler
